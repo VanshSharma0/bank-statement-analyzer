@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X, User, Lock, Mail, Eye, EyeOff } from 'lucide-react'
+import { GoogleLogin } from '@react-oauth/google'
 
 const AuthModal = ({ isOpen, onClose, onLogin, onRegister }) => {
   const [isLogin, setIsLogin] = useState(true)
@@ -26,6 +27,21 @@ const AuthModal = ({ isOpen, onClose, onLogin, onRegister }) => {
     })
   }
 
+  const handleGoogleSuccess = (credentialResponse) => {
+    // Decode the JWT token to get user info
+    const decoded = JSON.parse(atob(credentialResponse.credential.split('.')[1]))
+    const userData = {
+      name: decoded.name,
+      email: decoded.email,
+      picture: decoded.picture
+    }
+    onLogin(userData)
+  }
+
+  const handleGoogleError = () => {
+    console.log('Google Login Failed')
+  }
+
   if (!isOpen) return null
 
   return (
@@ -42,6 +58,29 @@ const AuthModal = ({ isOpen, onClose, onLogin, onRegister }) => {
             >
               <X className="w-5 h-5" />
             </button>
+          </div>
+
+          {/* Google Sign In Button */}
+          <div className="mb-6">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+              useOneTap
+              theme="outline"
+              size="large"
+              text={isLogin ? "signin_with" : "signup_with"}
+              shape="rectangular"
+              width="100%"
+            />
+          </div>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Or continue with</span>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">

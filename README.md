@@ -1,122 +1,135 @@
 # Bank Statement Analyzer
 
-A simple and intuitive web application that analyzes bank statements and provides easy-to-understand insights with exportable reports.
+A modern React application for analyzing bank statements with advanced features including Google authentication, month filtering, and improved table readability.
 
 ## Features
 
-- **File Upload**: Support for CSV, Excel, and PDF files
-- **Smart Analysis**: Automatically detects common column names for amounts, dates, and descriptions
-- **Visual Insights**: Clean, human-friendly presentation of financial data
-- **Export Options**: Download analysis as CSV or Excel files
-- **Free Tier**: 3 free analyses per session
-- **Premium Upgrade**: Unlimited analysis with advanced features
+- **File Upload**: Support for CSV and PDF bank statements
+- **Transaction Analysis**: Detailed breakdown of credits, debits, and balances
+- **Monthly Breakdown**: View transactions by month with filtering
+- **Google Authentication**: Sign in/up with Google account
+- **Export Functionality**: Export to CSV and Excel formats
+- **Premium Features**: Advanced analytics for premium users
+- **Responsive Design**: Works on desktop and mobile devices
 
-## Tech Stack
+## New Features Added
 
-- **Frontend**: React 18 with Vite
-- **Styling**: Tailwind CSS
-- **File Processing**: PapaParse (CSV), SheetJS (Excel), PDF.js (PDF)
-- **Icons**: Lucide React
-- **File Upload**: React Dropzone
+### 1. Google Sign-In/Sign-Up
+- Integrated Google OAuth 2.0 authentication
+- Automatic user profile picture display
+- Seamless login experience
 
-## Getting Started
+### 2. Enhanced Table Readability
+- Increased font size from `text-xs` to `text-sm`
+- Improved padding and spacing
+- Better column widths for readability
 
-### Prerequisites
+### 3. Month Filtering in Summary Tab
+- Click on any month to view transactions for that month only
+- Filter dropdown for easy month selection
+- Export filtered data to CSV/Excel
+- Visual highlighting of selected month
 
-- Node.js (v18 or higher)
-- npm or yarn
+## Setup Instructions
 
-### Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd bank-statement-analyzer
-```
-
-2. Install dependencies:
+### 1. Install Dependencies
 ```bash
 npm install
 ```
 
-3. Start the development server:
+### 2. Google OAuth Setup
+
+To enable Google sign-in functionality:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Google+ API
+4. Go to "Credentials" and create an "OAuth 2.0 Client ID"
+5. Set the authorized JavaScript origins to `http://localhost:5173` (for development)
+6. Copy your Client ID
+
+### 3. Configure Google Client ID
+
+Replace `YOUR_GOOGLE_CLIENT_ID` in `src/main.jsx` with your actual Google Client ID:
+
+```jsx
+<GoogleOAuthProvider clientId="your-actual-client-id-here">
+  <App />
+</GoogleOAuthProvider>
+```
+
+### 4. Run the Application
 ```bash
 npm run dev
 ```
 
-4. Open your browser and navigate to `http://localhost:5173`
-
 ## Usage
 
-1. **Upload Statement**: Drag and drop your CSV, Excel, or PDF file, or click to browse
-2. **Automatic Analysis**: The app will automatically detect and process your data
-3. **Review Insights**: View summary statistics, monthly breakdown, and transaction details
-4. **Export Results**: Download your analysis as CSV or Excel files
+### Authentication
+1. Click "Login" in the header
+2. Choose to sign in with Google or create a traditional account
+3. Your profile picture will be displayed if using Google authentication
 
-## Supported File Formats
+### File Analysis
+1. Upload your bank statement (CSV or PDF)
+2. View the analysis in three tabs:
+   - **Transactions**: All transactions with improved readability
+   - **Summary**: Key insights and monthly breakdown with filtering
+   - **Monthly Breakdown**: Detailed monthly statistics
 
-- **CSV**: Standard comma-separated values files
-- **Excel**: .xlsx and .xls files
-- **PDF**: Bank statement PDFs with text content
+### Month Filtering
+1. Go to the "Summary" tab
+2. Click on any month in the "Monthly Breakdown" section
+3. View transactions for that specific month
+4. Use the filter dropdown to select different months
+5. Export filtered data using the export buttons
 
-## Expected Column Names
+### Export Options
+- **CSV Export**: Download as CSV file
+- **Excel Export**: Download as Excel file with multiple sheets
+- **Filtered Export**: Export only selected month's data
 
-The app automatically detects common column names:
+## Technologies Used
 
-- **Amount**: amount, debit, credit, balance, transaction
-- **Date**: date, posted, transaction
-- **Description**: description, memo, details, narration
-
-## Free vs Premium
-
-### Free Tier
-- 3 analyses per session
-- Basic summary and export features
-- Standard processing
-
-### Premium Features
-- Unlimited analysis
-- Advanced analytics and insights
-- Priority customer support
-- Export to multiple formats
-- Custom report templates
-- Data visualization charts
+- React 19
+- Vite
+- Tailwind CSS
+- Lucide React Icons
+- PapaParse (CSV parsing)
+- PDF.js (PDF parsing)
+- XLSX (Excel export)
+- @react-oauth/google (Google authentication)
 
 ## Development
 
-### Project Structure
+```bash
+# Start development server
+npm run dev
 
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Run linting
+npm run lint
 ```
-src/
-├── components/
-│   ├── FileUpload.jsx      # File upload and processing
-│   ├── StatementAnalyzer.jsx # Analysis display and export
-│   ├── PaymentModal.jsx    # Premium upgrade modal
-│   └── Header.jsx          # App header with usage tracking
-├── App.jsx                 # Main application component
-├── main.jsx               # Application entry point
-└── index.css              # Tailwind CSS styles
-```
 
-### Available Scripts
+## Security Notes
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+- Google OAuth tokens are handled securely on the client side
+- No sensitive data is stored locally
+- Export functionality requires user authentication for large files
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests if applicable
+4. Test thoroughly
 5. Submit a pull request
 
 ## License
 
-This project is licensed under the MIT License.
-
-## Support
-
-For support or questions, please open an issue in the repository.
+MIT License - see LICENSE file for details

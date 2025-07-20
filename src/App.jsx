@@ -58,7 +58,11 @@ function App() {
 
   const handleLogin = (userData) => {
     // In a real app, you'd validate with backend
-    setUser({ name: userData.name || userData.email, email: userData.email })
+    setUser({ 
+      name: userData.name || userData.email, 
+      email: userData.email,
+      picture: userData.picture 
+    })
     setShowAuthModal(false)
     
     if (pendingExport === 'export') {

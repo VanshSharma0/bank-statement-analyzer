@@ -29,8 +29,21 @@ const Header = ({ isPremium, usageCount, freeLimit, user, onLogin, onLogout }) =
             
             {user ? (
               <div className="flex items-center space-x-3">
-                <div className="text-sm text-gray-700">
-                  Hi, {user.name}
+                <div className="flex items-center space-x-2">
+                  {user.picture ? (
+                    <img 
+                      src={user.picture} 
+                      alt={user.name}
+                      className="w-8 h-8 rounded-full border-2 border-gray-200"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                      <User className="w-4 h-4 text-primary-600" />
+                    </div>
+                  )}
+                  <div className="text-sm text-gray-700">
+                    Hi, {user.name}
+                  </div>
                 </div>
                 <button
                   onClick={onLogout}
