@@ -1,1 +1,33 @@
 @import "tailwindcss";
+
+body {
+  background-color: #f8fafc; /* Tailwind's slate-50 */
+  color: #1e293b; /* Tailwind's slate-800 */
+}
+
+.card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px 0 rgba(16, 30, 54, 0.06), 0 1.5px 4px 0 rgba(16, 30, 54, 0.03);
+  padding: 2rem;
+  border: 1px solid #e5e7eb; /* Tailwind's gray-200 */
+}
+
+/* Table styling for light mode */
+table {
+  background: #fff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+thead {
+  background: #f1f5f9; /* Tailwind's slate-100 */
+}
+th, td {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Remove any dark mode or ambiguous color rules */
+[data-theme="dark"], .dark {
+  background: unset !important;
+  color: unset !important;
+}

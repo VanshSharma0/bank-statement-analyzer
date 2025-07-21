@@ -296,28 +296,28 @@ const StatementAnalyzer = ({ data, onReset, onExport, user }) => {
                     Transactions for {selectedMonth}
                   </h3>
                   <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
+                    <table className="min-w-full divide-y divide-gray-200 w-full">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Date
                           </th>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Narration
                           </th>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Ref.No.
                           </th>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                             ValueDt
                           </th>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Withdrawal
                           </th>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Deposit
                           </th>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Balance
                           </th>
                         </tr>
@@ -325,25 +325,25 @@ const StatementAnalyzer = ({ data, onReset, onExport, user }) => {
                       <tbody className="bg-white divide-y divide-gray-200">
                         {getFilteredTransactions().map((transaction, index) => (
                           <tr key={index} className="hover:bg-gray-50">
-                            <td className="px-4 py-3 text-sm text-gray-900">
+                            <td className="px-2 py-3 text-sm text-gray-900">
                               {transaction.date}
                             </td>
-                            <td className="px-4 py-3 text-sm text-gray-900 max-w-[200px] truncate">
+                            <td className="px-2 py-3 text-sm text-gray-900">
                               {transaction.narration || transaction.description || ''}
                             </td>
-                            <td className="px-4 py-3 text-sm text-gray-600 max-w-[100px] truncate">
+                            <td className="px-2 py-3 text-sm text-gray-600">
                               {transaction.chqRefNo || '-'}
                             </td>
-                            <td className="px-4 py-3 text-sm text-gray-600">
+                            <td className="px-2 py-3 text-sm text-gray-600">
                               {transaction.valueDt || transaction.date}
                             </td>
-                            <td className="px-4 py-3 text-sm text-red-600">
+                            <td className="px-2 py-3 text-sm text-red-600">
                               {transaction.withdrawalAmt ? formatCurrency(transaction.withdrawalAmt) : '-'}
                             </td>
-                            <td className="px-4 py-3 text-sm text-green-600">
+                            <td className="px-2 py-3 text-sm text-green-600">
                               {transaction.depositAmt ? formatCurrency(transaction.depositAmt) : '-'}
                             </td>
-                            <td className="px-4 py-3 text-sm text-gray-900">
+                            <td className="px-2 py-3 text-sm text-gray-900">
                               {transaction.closingBalance ? formatCurrency(transaction.closingBalance) : '-'}
                             </td>
                           </tr>
@@ -359,28 +359,28 @@ const StatementAnalyzer = ({ data, onReset, onExport, user }) => {
           {activeTab === 'transactions' && (
             <div>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 w-full">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Date
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Narration
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Ref.No.
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         ValueDt
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Withdrawal
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Deposit
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Balance
                       </th>
                     </tr>
@@ -388,25 +388,25 @@ const StatementAnalyzer = ({ data, onReset, onExport, user }) => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {data.transactions.slice(0, data.transactions.length <= 100 ? data.transactions.length : 50).map((transaction, index) => (
                       <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm text-gray-900">
+                        <td className="px-2 py-3 text-sm text-gray-900">
                           {transaction.date}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-900 max-w-[200px] truncate">
+                        <td className="px-2 py-3 text-sm text-gray-900">
                           {transaction.narration || transaction.description || ''}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-600 max-w-[100px] truncate">
+                        <td className="px-2 py-3 text-sm text-gray-600">
                           {transaction.chqRefNo || '-'}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-600">
+                        <td className="px-2 py-3 text-sm text-gray-600">
                           {transaction.valueDt || transaction.date}
                         </td>
-                        <td className="px-4 py-3 text-sm text-red-600">
+                        <td className="px-2 py-3 text-sm text-red-600">
                           {transaction.withdrawalAmt ? formatCurrency(transaction.withdrawalAmt) : '-'}
                         </td>
-                        <td className="px-4 py-3 text-sm text-green-600">
+                        <td className="px-2 py-3 text-sm text-green-600">
                           {transaction.depositAmt ? formatCurrency(transaction.depositAmt) : '-'}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-900">
+                        <td className="px-2 py-3 text-sm text-gray-900">
                           {transaction.closingBalance ? formatCurrency(transaction.closingBalance) : '-'}
                         </td>
                       </tr>

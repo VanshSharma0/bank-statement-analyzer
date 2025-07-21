@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, FileText, AlertCircle } from 'lucide-react'
+import { Upload, FileText, AlertCircle, Lock } from 'lucide-react'
 import Papa from 'papaparse'
 import * as XLSX from 'xlsx'
 import * as pdfjsLib from 'pdfjs-dist'
@@ -9,18 +9,45 @@ import { PDFDocument } from 'pdf-lib'
 const FileUpload = ({ onFileProcessed }) => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState(null)
+  const [showPasswordModal, setShowPasswordModal] = useState(false)
+  const [pdfPassword, setPdfPassword] = useState('')
+  const [pendingPDF, setPendingPDF] = useState(null)
+  const [passwordError, setPasswordError] = useState(null)
 
-  const processPDFFile = async (file) => {
+  // Helper to process PDF with optional password
+  const tryLoadPDF = async (file, password = undefined) => {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`
+    const arrayBuffer = await file.arrayBuffer()
+    return pdfjsLib.getDocument({
+      data: arrayBuffer,
+      password,
+      useWorkerFetch: false,
+      isEvalSupported: false
+    }).promise
+  }
+
+  const processPDFFile = async (file, password = undefined) => {
     try {
-      // Set up PDF.js worker
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`
-      
-      const arrayBuffer = await file.arrayBuffer()
-      const pdf = await pdfjsLib.getDocument({ 
-        data: arrayBuffer,
-        useWorkerFetch: false,
-        isEvalSupported: false
-      }).promise
+      let pdf
+      try {
+        pdf = await tryLoadPDF(file, password)
+      } catch (err) {
+        if (err && err.code === pdfjsLib.PasswordResponses.NEED_PASSWORD) {
+          setPendingPDF(file)
+          setShowPasswordModal(true)
+          setPasswordError(null)
+          setIsProcessing(false)
+          return null
+        } else if (err && err.code === pdfjsLib.PasswordResponses.INCORRECT_PASSWORD) {
+          setPendingPDF(file)
+          setShowPasswordModal(true)
+          setPasswordError('Incorrect password, please try again.')
+          setIsProcessing(false)
+          return null
+        } else {
+          throw err
+        }
+      }
       
       let allText = ''
       let allLines = []
@@ -305,6 +332,10 @@ const FileUpload = ({ onFileProcessed }) => {
   const processFile = async (file) => {
     setIsProcessing(true)
     setError(null)
+    setShowPasswordModal(false)
+    setPdfPassword('')
+    setPendingPDF(null)
+    setPasswordError(null)
 
     try {
       const fileExtension = file.name.split('.').pop().toLowerCase()
@@ -345,6 +376,7 @@ const FileUpload = ({ onFileProcessed }) => {
         }
       } else if (fileExtension === 'pdf') {
         data = await processPDFFile(file)
+        if (data === null) return // Password modal will handle next step
       } else {
         throw new Error('Unsupported file format. Please upload CSV, Excel, or PDF files.')
       }
@@ -510,6 +542,28 @@ const FileUpload = ({ onFileProcessed }) => {
     multiple: false
   })
 
+  // Handle password modal submission
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault()
+    if (!pendingPDF) return
+    setIsProcessing(true)
+    setShowPasswordModal(false)
+    try {
+      const transactions = await processPDFFile(pendingPDF, pdfPassword)
+      if (transactions) {
+        const analyzedData = analyzePDFData(transactions)
+        onFileProcessed(analyzedData)
+      }
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setIsProcessing(false)
+      setPdfPassword('')
+      setPendingPDF(null)
+      setPasswordError(null)
+    }
+  }
+
   return (
     <div className="card">
       <div className="text-center">
@@ -567,6 +621,46 @@ const FileUpload = ({ onFileProcessed }) => {
           <p>Your data is processed locally and never uploaded to our servers</p>
         </div>
       </div>
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-sm w-full p-6">
+            <div className="flex items-center space-x-2 mb-4">
+              <Lock className="w-6 h-6 text-primary-600" />
+              <h2 className="text-lg font-semibold text-gray-900">Password Protected PDF</h2>
+            </div>
+            <form onSubmit={handlePasswordSubmit}>
+              <label className="block mb-2 text-gray-700">Enter PDF Password:</label>
+              <input
+                type="password"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                value={pdfPassword}
+                onChange={e => setPdfPassword(e.target.value)}
+                autoFocus
+                required
+              />
+              {passwordError && (
+                <div className="mb-2 text-red-600 text-sm">{passwordError}</div>
+              )}
+              <div className="flex justify-end space-x-2">
+                <button
+                  type="button"
+                  className="btn-secondary px-4 py-2"
+                  onClick={() => { setShowPasswordModal(false); setPdfPassword(''); setPendingPDF(null); setPasswordError(null); }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn-primary px-4 py-2"
+                  disabled={!pdfPassword}
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
